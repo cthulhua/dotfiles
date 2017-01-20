@@ -1,10 +1,12 @@
-[credential]
-	helper = osxkeychain
-[user]
-	name = Danny Hua
-	email = danny.hua@gmail.com
+# commented lines are for home use only
+# [credential]
+# 	helper = osxkeychain
+# [user]
+# 	name = Danny Hua
+# 	email = danny.hua@gmail.com
 [core]
-	editor = nvim
+#	editor = nvim
+    editor = vim
 [push]
 	default = simple
 [alias]
