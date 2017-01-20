@@ -19,6 +19,7 @@ set tabstop=4
 set shiftwidth=4
 autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
 autocmd Filetype eruby setlocal ts=2 sts=2 sw=2
+autocmd BufRead,BufNewFile *.tt setfiletype ruby
 set smartindent
 set hlsearch
 set number
@@ -54,16 +55,17 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 1
 "show all syntastic messages
-let g:syntastic_quiet_messages = {}
+" let g:syntastic_quiet_messages = {}
 "use these checkers
- " let g:syntastic_ruby_checkers = [ "mri", "rubocop", "flog" ]
-let g:syntastic_ruby_checkers = [ "mri", "rubocop" ]
+let g:syntastic_ruby_checkers = [ "mri", "rubocop", "flog" ]
+let g:syntastic_rust_checkers = [ "rustc" ]
 
 "ycm - don't ask about loading extra config files under ~
-let g:ycm_extra_conf_globlist = ['~/*']
+" let g:ycm_extra_conf_globlist = ['~/*']
 
 "for vim-dispatch try rake and then make
-let b:dispatch = 'rake'
+" let b:dispatch = 'cargo test'
+let b:dispatch = 'rake test'
 
 "vim-test bindings
 nmap <silent> <leader>t :TestNearest<CR>
@@ -110,11 +112,13 @@ Plugin 'mileszs/ack.vim'
 Plugin 'Yggdroot/indentLine'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'janko-m/vim-test'
-Plugin 'valloric/YouCompleteMe'
+" Plugin 'valloric/YouCompleteMe'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'rdnetto/YCM-Generator'
+" Plugin 'rdnetto/YCM-Generator'
 Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'rust-lang/rust.vim'
+Plugin 'racer-rust/vim-racer'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -135,5 +139,11 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
+set hidden
+let g:racer_cmd = "/Users/dannyhua/.cargo/bin/racer"
+
+"Rust
+let g:rustfmt_autosave = 1
+
 " neovim dev
-autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
+" autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
