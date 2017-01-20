@@ -1,0 +1,18 @@
+[credential]
+	helper = osxkeychain
+[user]
+	name = Danny Hua
+	email = danny.hua@gmail.com
+[core]
+	editor = nvim
+[push]
+	default = simple
+[alias]
+    dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)\"%an\" <%ae>%C(reset) %C(magenta)%ar%C(reset)%C(auto)%d%C(reset)%n%s' --date-order --all
+    ci = commit
+    co = checkout
+    st = status
+[pull]
+	rebase = true
+[status]
+	short = true
