@@ -1,20 +1,47 @@
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+# If you come from bash you might have to change your $PATH.
+export GOPATH=$HOME/go
+export GOBIN=$HOME/go/bin
+export PATH=$GOBIN:$HOME/bin:/usr/local/bin:$PATH
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin:$PATH"
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
+# python
+export PATH="/usr/local/opt/python/libexec/bin:$PATH"
+
+
+# Path to your oh-my-zsh installation.
+export ZSH="/Users/danny/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="agnoster"
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
 
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS=true
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -35,78 +62,104 @@ ZSH_THEME="agnoster"
 
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Which plugins would you like to load?
+# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git vi-mode fzf aws docker kubectl)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+DEFAULT_USER=danny
+prompt_context(){}
 
-export PATH=$HOME/bin:/usr/local/bin:$PATH
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='nvim'
-fi
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
-
-# chruby
-source /usr/local/opt/chruby/share/chruby/chruby.sh
-
-#don't bail if glob-matching fails
-#this is for stuff like git checkout HEAD^
-setopt NO_NOMATCH 
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
-# Example aliases
-alias zshrc="v ~/.zshrc"
-alias vimrc="v ~/.vimrc"
-alias ohmyzsh="v ~/.oh-my-zsh"
-alias v="vim -O"
-alias g="git"
+alias zshrc="nvim ~/.zshrc"
+alias vimrc="nvim ~/.vimrc"
+alias ohmyzsh="nvim ~/.oh-my-zsh"
+alias c="cargo"
+alias cb="cargo build"
+alias ct="cargo test"
+alias cr="cargo run"
+alias cf="cargo fmt"
+alias cc="cargo clean"
+alias cx="cargo fix"
+alias crr="cargo run --release"
+alias gdag="g dag"
+alias tf="terraform"
+alias vv="nvim -O"
+alias ag="rg"
+alias grep="rg"
 
-# docker
-export DOCKER_HOST=tcp://192.168.59.103:2376
-export DOCKER_CERT_PATH=/Users/dannyhua/.boot2docker/certs/boot2docker-vm
-export DOCKER_TLS_VERIFY=1
+#jump around
+. $(brew --prefix)/etc/profile.d/z.sh
+#z fzf integration
+unalias z 2> /dev/null
+z() {
+  [ $# -gt 0 ] && _z "$*" && return
+  cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+}
 
-#homebrew
-export HOMEBREW_GITHUB_API_TOKEN=a38d2cbad4abd0307f55c6ce9458bd66f6a7ac34
+# v - open files in ~/.viminfo, and cwd files
+v() {
+  if [ -f $1 ];
+  then  nvim $1;
+      return;
+  fi
+  local files
+  files=$((ls -a1 & printf "redir @a\noldfiles\nput a\n%%print\n" | nvim -es | cut -f2- -d ' ') |
+          while read line; do
+            [ -f "${line/\~/$HOME}" ] && echo "$line"
+          done | fzf-tmux -d -m -q "$*" -1) && nvim ${files//\~/$HOME}
+}
 
-#jenv
-export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/danny/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/danny/Downloads/google-cloud-sdk/path.zsh.inc'; fi
 
-#single line server
-alias rbserver="ruby -run -ehttpd . -p8000"
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/danny/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/danny/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
 
-#rust
-export PATH="/Users/dannyhua/.cargo/bin:$PATH"
-export RUST_SRC_PATH="/Users/dannyhua/.multirust/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src"
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-#rust interop for sdl2 
-export LIBRARY_PATH="$LIBRARY_PATH:/usr/local/lib"
+# chruby and autoswitching based on .ruby-version
+source /usr/local/opt/chruby/share/chruby/chruby.sh
+source /usr/local/opt/chruby/share/chruby/auto.sh
+# default ruby -- update when new one
+chruby ruby-2.6.4
+
+export PGDATA='/usr/local/var/postgres'
+
+source /usr/local/share/zsh/site-functions/_aws
+
+export RUSTC_WRAPPER=sccache
+autoload -Uz compinit && compinit -i
