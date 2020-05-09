@@ -1,8 +1,11 @@
 syntax enable
-" solarized is nice
-set background=dark
-" set background=light
 colorscheme solarized
+let dark = system('defaults read -g AppleInterfaceStyle |grep -q Dark')
+if v:shell_error == 0
+    set background=dark
+else
+    set background=light
+endif
 
 "gitgutter to show changes
 highlight clear SignColumn
@@ -16,11 +19,8 @@ let mapleader = "\<Space>"
 
 set backspace=indent,eol,start
 set expandtab
-set tabstop=4
-set shiftwidth=4
-autocmd Filetype ruby setlocal ts=2 sts=2 sw=2
-autocmd Filetype eruby setlocal ts=2 sts=2 sw=2
-autocmd Filetype yaml setlocal ts=2 sts=2 sw=2
+set tabstop=2
+set shiftwidth=2
 autocmd BufRead,BufNewFile *.tt setfiletype ruby
 set smartindent
 set hlsearch
@@ -46,9 +46,10 @@ vnoremap fj <Esc>
 "nice indentLine
 let g:indentLine_char = '┆'
 
-autocmd Filetype rust let b:dispatch = 'cargo test'
+autocmd Filetype rust let b:dispatch = 'cargo build'
 autocmd BufRead,BufNewFile *.tf setfiletype terraform
 autocmd Filetype terraform let b:dispatch = 'terraform validate -no-color'
+nmap <silent> <leader>m :Dispatch<CR>
 
 "vim-test bindings
 nmap <silent> <leader>t :TestNearest<CR>
@@ -68,6 +69,7 @@ let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 "ale
+let g:ale_rust_rls_executable = '/Users/danny/.cargo/bin/rust-analyzer'
 let g:ale_linters = {
 \   'go': ['golint'],
 \   'proto': ['prototool-lint'],
@@ -83,8 +85,10 @@ let g:ale_fix_on_save = 1
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 nmap <silent> <C-l> <Plug>(ale_go_to_definition_in_vsplit)
+nmap <silent> <C-i> <Plug>(ale_go_to_definition)
 nmap <silent> <C-h> <Plug>(ale_find_references)
 nmap <silent> <C-y> <Plug>(ale_hover)
+nmap <silent> <C-n> <Plug>(ale_detail)
 
 " <leader>f will format and fix your current file.
 " Change to PrototoolFormat to only format and not fix.
@@ -141,7 +145,7 @@ let g:airline#extensions#ale#enabled=1
 
 
 "prettier
-let g:prettier#autoformat = 0
+let g:prettier#autoformat_config_present = 1
 
 autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
 

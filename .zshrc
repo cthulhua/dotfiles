@@ -5,6 +5,8 @@ export PATH=$GOBIN:$HOME/bin:/usr/local/bin:$PATH
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin:$PATH"
 
+export RUST_BACKTRACE=full
+
 # python
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
@@ -89,12 +91,7 @@ prompt_context(){}
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+export EDITOR='nvim'
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -118,14 +115,16 @@ alias crr="cargo run --release"
 alias gdag="g dag"
 alias tf="terraform"
 alias vv="nvim -O"
+alias vim="nvim -O"
 alias ag="rg"
 alias grep="rg"
+alias ds="docker stop"
 
 #jump around
 . $(brew --prefix)/etc/profile.d/z.sh
 #z fzf integration
-unalias z 2> /dev/null
-z() {
+unalias f 2> /dev/null
+f() {
   [ $# -gt 0 ] && _z "$*" && return
   cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
 }
