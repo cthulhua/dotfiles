@@ -76,7 +76,7 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git vi-mode fzf aws docker kubectl)
+plugins=(git vi-mode fzf aws )
 
 source $ZSH/oh-my-zsh.sh
 
@@ -120,7 +120,7 @@ alias ds="docker stop"
 alias i="istioctl"
 
 #jump around
-. $(brew --prefix)/etc/profile.d/z.sh
+. /usr/local/etc/profile.d/z.sh
 #z fzf integration
 unalias f 2> /dev/null
 f() {
@@ -147,13 +147,12 @@ v() {
 source /usr/local/opt/chruby/share/chruby/chruby.sh
 source /usr/local/opt/chruby/share/chruby/auto.sh
 # default ruby -- update when new one
-chruby ruby-2.6.4
+chruby ruby-2.7.0
 
 export PGDATA='/usr/local/var/postgres'
 
 source /usr/local/share/zsh/site-functions/_aws
 
-export RUSTC_WRAPPER=sccache
 autoload -Uz compinit && compinit -i
 
 # The next line updates PATH for the Google Cloud SDK.
