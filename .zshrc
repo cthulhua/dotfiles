@@ -153,6 +153,7 @@ export PGDATA='/usr/local/var/postgres'
 
 source /usr/local/share/zsh/site-functions/_aws
 
+export RUSTC_WRAPPER=sccache
 autoload -Uz compinit && compinit -i
 
 # The next line updates PATH for the Google Cloud SDK.
