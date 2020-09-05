@@ -119,15 +119,6 @@ alias grep="rg"
 alias ds="docker stop"
 alias i="istioctl"
 
-#jump around
-. /usr/local/etc/profile.d/z.sh
-#z fzf integration
-unalias f 2> /dev/null
-f() {
-  [ $# -gt 0 ] && _z "$*" && return
-  cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
-}
-
 # v - open files in ~/.viminfo, and cwd files
 v() {
   if [ -f $1 ];
@@ -167,3 +158,50 @@ export PATH="/usr/local/opt/llvm/bin:$PATH"
 
 autoload -U +X bashcompinit && bashcompinit
 complete -o nospace -C /usr/local/bin/terraform terraform
+
+_z_cd() {
+    cd "$@" || return "$?"
+
+    if [ "$_ZO_ECHO" = "1" ]; then
+        echo "$PWD"
+    fi
+}
+
+z() {
+    if [ "$#" -eq 0 ]; then
+        _z_cd ~ || return "$?"
+    elif [ "$#" -eq 1 ] && [ "$1" = '-' ]; then
+        if [ -n "$OLDPWD" ]; then
+            _z_cd "$OLDPWD" || return "$?"
+        else
+            echo 'zoxide: $OLDPWD is not set'
+            return 1
+        fi
+    else
+        result="$(zoxide query "$@")" || return "$?"
+        if [ -d "$result" ]; then
+            _z_cd "$result" || return "$?"
+        elif [ -n "$result" ]; then
+            echo "$result"
+        fi
+    fi
+}
+
+
+alias zi='z -i'
+
+alias za='zoxide add'
+
+alias zq='zoxide query'
+alias zqi='zoxide query -i'
+
+alias zr='zoxide remove'
+alias zri='zoxide remove -i'
+
+
+_zoxide_hook() {
+    zoxide add
+}
+
+chpwd_functions=(${chpwd_functions[@]} "_zoxide_hook")
+
