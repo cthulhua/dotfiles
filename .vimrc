@@ -65,7 +65,7 @@ let g:python_host_prog = '/usr/local/bin/python2'
 
 "ctrlp bindings
 let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_cmd = 'CtrlPMRU'
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 
 " <leader>f will format and fix your current file.
@@ -109,6 +109,9 @@ Plug 'hashivim/vim-terraform'
 Plug 'prettier/vim-prettier'
 Plug 'mhinz/vim-crates'
 Plug 'rust-lang/rust.vim'
+Plug 'jiangmiao/auto-pairs'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 call plug#end()
 
 let g:airline_powerline_fonts = 1
@@ -116,7 +119,10 @@ let g:airline#extensions#coc#enabled = 1
 
 
 "prettier
+let g:prettier#autoformat_require_pragma = 0
 let g:prettier#autoformat_config_present = 1
+let g:prettier#exec_cmd_async = 1
+let g:prettier#config#arrow_parens = 'always'
 
 autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
 
@@ -262,3 +268,5 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 let g:rustfmt_autosave = 1
 let g:rustfmt_fail_silently = 1
 let g:rustfmt_emit_files = 1
+
+" let g:coc_node_args = ['--max-old-space-size=8192']
