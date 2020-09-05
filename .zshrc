@@ -5,7 +5,6 @@ export PATH=$GOBIN:$HOME/bin:/usr/local/bin:$PATH
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin:$PATH"
 
-
 # python
 export PATH="/usr/local/opt/python/libexec/bin:$PATH"
 
@@ -118,7 +117,7 @@ alias vim="nvim -O"
 alias ag="rg"
 alias grep="rg"
 alias ds="docker stop"
-alias dsa="docker stop $(docker ps -q)"
+alias i="istioctl"
 
 #jump around
 . $(brew --prefix)/etc/profile.d/z.sh
@@ -142,12 +141,6 @@ v() {
           done | fzf-tmux -d -m -q "$*" -1) && nvim ${files//\~/$HOME}
 }
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '$HOME/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '$HOME/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '$HOME/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '$HOME/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # chruby and autoswitching based on .ruby-version
@@ -162,3 +155,15 @@ source /usr/local/share/zsh/site-functions/_aws
 
 export RUSTC_WRAPPER=sccache
 autoload -Uz compinit && compinit -i
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '$HOME/google-cloud-sdk/path.zsh.inc' ]; then . '$HOME/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '$HOME/google-cloud-sdk/completion.zsh.inc' ]; then . '$HOME/google-cloud-sdk/completion.zsh.inc'; fi
+export SCCACHE_CACHE_SIZE="50G"
+ulimit -S -n 4096
+export PATH="/usr/local/opt/llvm/bin:$PATH"
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/bin/terraform terraform
