@@ -1,11 +1,11 @@
 syntax enable
-colorscheme solarized
 let dark = system('defaults read -g AppleInterfaceStyle |grep -q Dark')
 if v:shell_error == 0
     set background=dark
 else
     set background=light
 endif
+colorscheme solarized
 
 "gitgutter to show changes
 highlight clear SignColumn
@@ -112,6 +112,10 @@ Plug 'rust-lang/rust.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
+Plug 'wlangstroth/vim-racket'
+Plug 'kassio/neoterm'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 call plug#end()
 
 let g:airline_powerline_fonts = 1
@@ -270,3 +274,27 @@ let g:rustfmt_fail_silently = 1
 let g:rustfmt_emit_files = 1
 
 " let g:coc_node_args = ['--max-old-space-size=8192']
+" stuff for sicp
+filetype off
+
+let &runtimepath.=',~/.vim/bundle/neoterm'
+
+filetype plugin on
+silent! helptags ALL
+let g:neoterm_default_mod = 'botright'
+let g:neoterm_direct_open_repl = 1
+let g:neoterm_autoscroll = 1
+" Use gx{text-object} in normal mode
+nmap gx <Plug>(neoterm-repl-send)
+
+" Send selected contents in visual mode.
+xmap gx <Plug>(neoterm-repl-send)
+
+" toggle terms
+nmap gz :<C-u>TtoggleAll<CR>
+
+" allow esc in terminal
+:tnoremap <Esc> <C-\><C-n>
+
+let g:neoterm_size = 9
+
