@@ -3,7 +3,7 @@ export GOPATH=$HOME/go
 export GOBIN=$HOME/go/bin
 export PATH=$GOBIN:$HOME/bin:/usr/local/bin:$PATH
 export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="/Applications/Visual Studio Code.app/Contents/Resources/app/bin:$PATH"
+export PATH="$HOME/fomu-toolchain/fomu-toolchain-linux_x86_64-v1.5.6/bin:$PATH"
 
 
 # python
@@ -77,7 +77,7 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git vi-mode fzf aws docker kubectl)
+plugins=(git vi-mode fzf )
 
 source $ZSH/oh-my-zsh.sh
 
@@ -117,11 +117,9 @@ alias vv="nvim -O"
 alias vim="nvim -O"
 alias ag="rg"
 alias grep="rg"
-alias ds="docker stop"
-alias dsa="docker stop $(docker ps -q)"
 
 #jump around
-. $(brew --prefix)/etc/profile.d/z.sh
+[[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
 #z fzf integration
 unalias f 2> /dev/null
 f() {
@@ -150,15 +148,7 @@ if [ -f '$HOME/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '$HOME/D
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# chruby and autoswitching based on .ruby-version
-source /usr/local/opt/chruby/share/chruby/chruby.sh
-source /usr/local/opt/chruby/share/chruby/auto.sh
-# default ruby -- update when new one
-chruby ruby-2.6.4
-
 export PGDATA='/usr/local/var/postgres'
 
-source /usr/local/share/zsh/site-functions/_aws
-
-export RUSTC_WRAPPER=sccache
+# export RUSTC_WRAPPER=sccache
 autoload -Uz compinit && compinit -i

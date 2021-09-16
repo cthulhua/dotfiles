@@ -1,14 +1,8 @@
 syntax enable
 colorscheme solarized
-let dark = system('defaults read -g AppleInterfaceStyle |grep -q Dark')
-if v:shell_error == 0
-    set background=dark
-else
-    set background=light
-endif
+"set background=light
 
-"gitgutter to show changes
-highlight clear SignColumn
+"gitgutter to show changes highlight clear SignColumn
 highlight GitGutterAdd ctermfg=green guifg=darkgreen
 highlight GitGutterChange ctermfg=yellow guifg=darkyellow
 highlight GitGutterDelete ctermfg=red guifg=darkred
