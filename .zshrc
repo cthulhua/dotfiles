@@ -119,7 +119,7 @@ alias ag="rg"
 alias grep="rg"
 
 #jump around
-[[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
+[[ -r "$HOME/z/z.sh" ]] && source $HOME/z/z.sh
 #z fzf integration
 unalias f 2> /dev/null
 f() {

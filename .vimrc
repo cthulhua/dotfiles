@@ -1,6 +1,4 @@
 syntax enable
-colorscheme solarized
-"set background=light
 
 "gitgutter to show changes highlight clear SignColumn
 highlight GitGutterAdd ctermfg=green guifg=darkgreen
@@ -103,6 +101,7 @@ Plug 'hashivim/vim-terraform'
 Plug 'prettier/vim-prettier'
 Plug 'mhinz/vim-crates'
 Plug 'rust-lang/rust.vim'
+Plug 'lifepillar/vim-solarized8'
 call plug#end()
 
 let g:airline_powerline_fonts = 1
@@ -256,3 +255,7 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 let g:rustfmt_autosave = 1
 let g:rustfmt_fail_silently = 1
 let g:rustfmt_emit_files = 1
+
+set termguicolors
+colorscheme solarized8
+set background=dark
